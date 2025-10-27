@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Foto do Documento - Verso</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    height: 100vh;
+}
+.phone{
+    width: 100%;
+    max-width: 400px;
+    height: 100vh;
+    background-color: #fff;
+}
+.main-content {
+    background-color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 24px 18px;
+    color: #333;
+    flex-grow: 1;
+    margin-top: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.title {
+    width: 100%;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+.highlight {
+    font-weight: bold;
+    color: #004b82;
+}
+.document-frame {
+    width: 100%;
+    max-width: 300px;
+    height: 180px;
+    border: 3px dashed #004b82;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+.document-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.document-frame span {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #004b82;
+    font-size: 16px;
+    text-align: center;
+}
+.section-title {
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #004b82;
+    margin-bottom: 20px;
+}
+.tips-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+.tip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+.tip-icon {
+    font-size: 28px;
+    line-height: 1.2;
+    color: #004b82;
+    flex-shrink: 0;
+}
+.tip-text {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.4;
+}
+.tip-text strong {
+    font-weight: bold;
+    color: #004b82;
+}
+.capture-btn {
+    width: 100%;
+    background-color: #1462d8;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 0;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.capture-btn:hover {
+    background-color: #0d4fb8;
+}
+</style>
+</head>
+<body>
+<div class="phone">
+    <div class="main-content">
+        <p class="title">
+            Tire a foto da <strong class="highlight">parte de trás do documento</strong>
+        </p>
+
+        <div class="document-frame" id="docFrame">
+            <span id="placeholderText">Coloque o documento aqui</span>
+        </div>
+
+        <h2 class="section-title">DICAS</h2>
+
+        <div class="tips-list">
+            <div class="tip-item">
+                <span class="tip-icon">☀️</span>
+                <p class="tip-text">
+                    Esteja em um <strong class="highlight">ambiente bem iluminado</strong> e sem sombras sobre o documento.
+                </p>
+            </div>
+
+            <div class="tip-item">
+                <span class="tip-icon">📄</span>
+                <p class="tip-text">
+                    Coloque o documento totalmente dentro do quadrado. <strong class="highlight">Nada pode ficar fora da área marcada.</strong>
+                </p>
+            </div>
+
+            <div class="tip-item">
+                <span class="tip-icon">🤲</span>
+                <p class="tip-text">
+                    Segure o documento firme para evitar que a foto fique <strong class="highlight">borrada ou torta.</strong>
+                </p>
+            </div>
+
+            <div class="tip-item">
+                <span class="tip-icon">📱</span>
+                <p class="tip-text">
+                    Segure o celular na <strong class="highlight">altura do documento</strong> e centralize o quadrado na tela.
+                </p>
+            </div>
+        </div>
+
+        <button class="capture-btn" id="captureBtn">Tirar Foto</button>
+    </div>
+</div>
+
+<script>
+const docFrame = document.getElementById('docFrame');
+const placeholder = document.getElementById('placeholderText');
+const imgPath = 'assets/doctras.png'; // imagem da parte de trás
+
+const img = new Image();
+img.src = imgPath;
+img.onload = () => {
+    docFrame.appendChild(img);
+    placeholder.style.display = 'none';
+};
+
+// Redireciona para a câmera ao clicar
+document.getElementById('captureBtn').addEventListener('click', () => {
+    window.location.href = 'cameradoc2.html';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Foto do Documento - Tela Cheia</title>
+<style>
+body, html {
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family: Arial, sans-serif;
+    background:#000; /* preto para dar contraste */
+    overflow: hidden;
+}
+video, canvas {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:cover; /* cobre toda a tela */
+}
+.checkmark {
+    position:absolute;
+    font-size:80px;
+    color:green;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+    display:none;
+    z-index:10;
+}
+button {
+    position:absolute;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%);
+    padding:14px 28px;
+    border:none;
+    border-radius:8px;
+    background:#1462d8;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    z-index:10;
+}
+</style>
+</head>
+<body>
+
+<video id="video" autoplay muted playsinline></video>
+<canvas id="canvas" style="display:none;"></canvas>
+<div id="checkmark" class="checkmark">✅</div>
+<button id="captureBtn">Tirar Foto</button>
+<button id="continueBtn" style="display:none;">Continuar</button>
+
+<script>
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const captureBtn = document.getElementById('captureBtn');
+const continueBtn = document.getElementById('continueBtn');
+const checkmark = document.getElementById('checkmark');
+
+async function startRearCamera() {
+    try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(device => device.kind === 'videoinput');
+        let rearCamera = videoDevices.find(device => device.label.toLowerCase().includes('back')) || videoDevices[0];
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { deviceId: rearCamera.deviceId, facingMode: "environment" } // garante traseira
+        });
+        video.srcObject = stream;
+    } catch (err) {
+        console.log('Erro ao acessar a câmera traseira: ' + err);
+    }
+}
+
+captureBtn.addEventListener('click', () => {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    video.style.display = 'none';
+    canvas.style.display = 'block';
+    checkmark.style.display = 'block';
+    continueBtn.style.display = 'block';
+    captureBtn.style.display = 'none';
+});
+
+continueBtn.addEventListener('click', () => {
+    window.location.href = "apresentacao.html";
+});
+
+startRearCamera();
+</script>
+
+</body>
+</html>

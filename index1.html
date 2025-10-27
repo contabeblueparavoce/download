@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Acesso - Beblue</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root{
+  --primary-bg: #ffffff;
+  --accent-blue: #1462d8;
+  --gray: #a0aec0;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--primary-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.phone {
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  background-color: var(--primary-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.container {
+  width: 100%;
+  text-align: center;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 20px auto;
+  width: 130px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #e6e6e6;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  font-size: 15px;
+}
+
+.action-btn {
+  width: 100%;
+  background: var(--accent-blue);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: background 0.3s;
+}
+
+.action-btn:hover {
+  background: #0e4eb5;
+}
+
+.error {
+  color: #e63946;
+  font-size: 13px;
+  margin-top: -6px;
+  margin-bottom: 10px;
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Ícone toggle */
+.toggle-icon {
+  width: 40px;
+  height: 24px;
+  background: var(--gray);
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.toggle-icon.active {
+  background: var(--accent-blue);
+}
+
+.toggle-icon .circle {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: left 0.3s;
+}
+
+.toggle-icon.active .circle {
+  left: 18px;
+}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <!-- Tela de cadastro -->
+  <div class="container" id="cadastro">
+    <img src="assets/logocadastro.png" alt="Logo" class="logo" />
+    <h2 class="text-lg font-semibold mb-4">Crie sua conta</h2>
+
+    <input type="text" id="cadastroNome" class="form-input" placeholder="Nome completo" />
+    <input type="text" id="cadastroCpf" class="form-input" placeholder="CPF" maxlength="14" />
+    <input type="text" id="cadastroTelefone" class="form-input" placeholder="Telefone" maxlength="13" />
+    <input type="email" id="cadastroEmail" class="form-input" placeholder="E-mail" maxlength="50" />
+    <input type="password" id="cadastroSenha" class="form-input" placeholder="Crie uma senha" />
+
+    <button class="action-btn" id="btnCadastrar">Cadastrar</button>
+  </div>
+
+  <!-- Tela de login -->
+  <div class="container hidden" id="login">
+    <img src="assets/logocadastro.png" alt="Logo" class="logo" />
+    <h2 class="text-lg font-semibold mb-4">Acesse sua conta</h2>
+
+    <input type="text" id="loginCpf" class="form-input" placeholder="CPF (111.111.111-11)" maxlength="14" />
+    <input type="password" id="loginSenha" class="form-input" placeholder="Senha" />
+    
+    <div class="text-right -mt-2 mb-2">
+        <a href="#" id="linkEsqueceuSenha" class="text-sm" style="color: #555;">Esqueceu a senha?</a>
+    </div>
+
+    <div id="erroLogin" class="error">CPF ou senha incorretos.</div>
+
+    <!-- Toggle com descrição no canto direito -->
+    <div class="flex items-center justify-end mt-2" style="gap:8px;">
+      <span style="font-size:14px; color:#555;">Salvar CPF?</span>
+      <div id="toggleRemember" class="toggle-icon">
+        <div class="circle"></div>
+      </div>
+    </div>
+
+    <button class="action-btn" id="btnLogin">Entrar</button>
+  </div>
+
+  <!-- Tela de esqueci a senha -->
+  <div class="container hidden" id="forgot-password">
+    <img src="assets/logocadastro.png" alt="Logo" class="logo" />
+    <h2 class="text-lg font-semibold mb-4">Redefinir Senha</h2>
+
+    <input type="text" id="forgotCpf" class="form-input" placeholder="Confirme seu CPF" maxlength="14" />
+    <input type="password" id="forgotNovaSenha" class="form-input" placeholder="Digite a nova senha" />
+    <div id="erroForgot" class="error">CPF não encontrado.</div>
+
+    <button class="action-btn" id="btnRedefinir">Redefinir Senha</button>
+    <a href="#" id="voltarLogin" class="text-sm text-gray-600 mt-4 inline-block">Voltar para o Login</a>
+  </div>
+</div>
+
+<script>
+// Referências
+const cadastroDiv = document.getElementById("cadastro");
+const loginDiv = document.getElementById("login");
+const forgotPasswordDiv = document.getElementById("forgot-password");
+
+const btnCadastrar = document.getElementById("btnCadastrar");
+const btnLogin = document.getElementById("btnLogin");
+const toggleRemember = document.getElementById("toggleRemember");
+const erroLogin = document.getElementById("erroLogin");
+
+// Recupera usuário do localStorage (se houver)
+let userData = JSON.parse(localStorage.getItem("userData")) || null;
+let rememberCPF = JSON.parse(localStorage.getItem("rememberCPF")) || false;
+
+// Máscara de CPF
+function maskCPF(value) {
+  return value
+    .replace(/\D/g, "")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d)/, "$1.$2")
+    .replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+    .substring(0, 14);
+}
+
+// Máscara de Telefone
+function maskPhone(value) {
+  let v = value.replace(/\D/g, "");
+  if (v.length > 2 && v.length <= 7) {
+    v = v.replace(/(\d{2})(\d+)/, "$1.$2");
+  } else if (v.length > 7) {
+    v = v.replace(/(\d{2})(\d{5})(\d+)/, "$1.$2.$3");
+  }
+  return v.substring(0, 13);
+}
+
+// Aplicar máscaras
+document.getElementById("cadastroCpf").addEventListener("input", (e) => {
+  e.target.value = maskCPF(e.target.value);
+});
+document.getElementById("loginCpf").addEventListener("input", (e) => {
+  e.target.value = maskCPF(e.target.value);
+});
+document.getElementById("forgotCpf").addEventListener("input", (e) => {
+  e.target.value = maskCPF(e.target.value);
+});
+document.getElementById("cadastroTelefone").addEventListener("input", (e) => {
+  e.target.value = maskPhone(e.target.value);
+});
+
+// Se já existe cadastro, pula direto para login
+if (userData) {
+  cadastroDiv.classList.add("hidden");
+  loginDiv.classList.remove("hidden");
+  document.getElementById("loginCpf").value = rememberCPF ? userData.cpf : '';
+  document.getElementById("loginSenha").value = userData.password;
+}
+
+// Atualiza estado do toggle
+if (rememberCPF) toggleRemember.classList.add("active");
+
+// Toggle click
+toggleRemember.addEventListener("click", () => {
+  toggleRemember.classList.toggle("active");
+  rememberCPF = toggleRemember.classList.contains("active");
+  localStorage.setItem("rememberCPF", JSON.stringify(rememberCPF));
+});
+
+// Cadastrar usuário
+btnCadastrar.addEventListener("click", () => {
+  const nome = document.getElementById("cadastroNome").value.trim();
+  const cpf = document.getElementById("cadastroCpf").value.trim();
+  const telefone = document.getElementById("cadastroTelefone").value.trim();
+  const email = document.getElementById("cadastroEmail").value.trim();
+  const senha = document.getElementById("cadastroSenha").value.trim();
+
+  if (!nome || !cpf || !telefone || !email || !senha) {
+    alert("Preencha todos os campos para continuar.");
+    return;
+  }
+
+  if (cpf.length < 14) {
+    alert("CPF incompleto.");
+    return;
+  }
+
+  if (telefone.length < 13) {
+    alert("Telefone incompleto.");
+    return;
+  }
+
+  // Gera um saldo aleatório para o novo usuário entre 3000 e 5500
+  const minBalance = 3000;
+  const maxBalance = 5500;
+  const randomBalance = Math.random() * (maxBalance - minBalance) + minBalance;
+
+  userData = { nome, cpf, telefone, email, password: senha };
+  localStorage.setItem("userData", JSON.stringify(userData));
+  localStorage.setItem("userBalance", randomBalance.toFixed(2)); // Salva o saldo com 2 casas decimais
+
+  cadastroDiv.classList.add("hidden");
+  loginDiv.classList.remove("hidden");
+  document.getElementById("loginCpf").value = rememberCPF ? cpf : '';
+  document.getElementById("loginSenha").value = senha;
+});
+
+// Login
+btnLogin.addEventListener("click", () => {
+  const cpf = document.getElementById("loginCpf").value.trim();
+  const senha = document.getElementById("loginSenha").value.trim();
+
+  if (userData && userData.cpf === cpf && userData.password === senha) {
+      erroLogin.style.display = "none";
+      const onboardingComplete = localStorage.getItem('onboardingComplete');
+
+      // Se o usuário NUNCA completou o processo de verificação, inicia o fluxo.
+      if (onboardingComplete !== 'true') {
+          window.location.href = "dicasfacial.html"; 
+      } else {
+          // Se já completou, vai para a tela de boas-vindas.
+          window.location.href = "boasvindas.html";
+      }
+  } else {
+    erroLogin.style.display = "block";
+  }
+});
+
+// Navegação para "Esqueci a senha"
+const linkEsqueceuSenha = document.getElementById("linkEsqueceuSenha");
+linkEsqueceuSenha.addEventListener("click", (e) => {
+    e.preventDefault();
+    loginDiv.classList.add("hidden");
+    forgotPasswordDiv.classList.remove("hidden");
+});
+
+// Voltar para o login
+const voltarLogin = document.getElementById("voltarLogin");
+voltarLogin.addEventListener("click", (e) => {
+    e.preventDefault();
+    forgotPasswordDiv.classList.add("hidden");
+    loginDiv.classList.remove("hidden");
+});
+
+// Redefinir a senha
+const btnRedefinir = document.getElementById("btnRedefinir");
+btnRedefinir.addEventListener("click", () => {
+    const cpf = document.getElementById("forgotCpf").value.trim();
+    const novaSenha = document.getElementById("forgotNovaSenha").value.trim();
+    const erroForgot = document.getElementById("erroForgot");
+
+    if (userData && userData.cpf === cpf) {
+        erroForgot.style.display = "none";
+        userData.password = novaSenha; // Atualiza a senha no objeto
+        localStorage.setItem("userData", JSON.stringify(userData)); // Salva no localStorage
+
+        alert("Senha alterada com sucesso!");
+
+        // Volta para a tela de login com os novos dados
+        forgotPasswordDiv.classList.add("hidden");
+        loginDiv.classList.remove("hidden");
+        document.getElementById("loginSenha").value = novaSenha;
+    } else {
+        erroForgot.style.display = "block";
+    }
+});
+</script>
+
+</body>
+</html>

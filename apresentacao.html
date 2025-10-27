@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análise de Cadastro</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+  }
+
+  .centered {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  img.logo {
+    width: 180px;
+    opacity: 0;
+    transform: scale(0);
+    animation: scaleIn 2s ease forwards; /* animação mais lenta */
+  }
+
+  .subtitle, .approval-text {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #333;
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .checkmark {
+    font-size: 100px;
+    color: green;
+    opacity: 0;
+    transform: scale(0);
+    margin-top: 20px;
+  }
+
+  /* Animação de entrada */
+  @keyframes scaleIn {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .visible {
+    animation: scaleIn 1.5s ease forwards; /* animação mais suave para textos e checkmark */
+  }
+</style>
+</head>
+<body>
+
+<div class="centered">
+  <!-- Logo -->
+  <img src="assets/logo.png" alt="Logo" id="logo" class="logo">
+
+  <!-- Texto inicial -->
+  <div class="subtitle" id="subtitle">
+    Estamos analisando seus dados,<br>
+    aguarde, a análise será breve.
+  </div>
+
+  <!-- Texto aprovado -->
+  <div class="approval-text" id="approvalText">
+    Cadastro aprovado!
+  </div>
+
+  <!-- Checkmark aprovado -->
+  <div class="checkmark" id="checkmark">✅</div>
+</div>
+
+<script>
+  const logo = document.getElementById('logo');
+  const subtitle = document.getElementById('subtitle');
+  const approvalText = document.getElementById('approvalText');
+  const checkmark = document.getElementById('checkmark');
+
+  // Mostra o texto inicial com animação
+  setTimeout(() => {
+    subtitle.classList.add('visible');
+  }, 500);
+
+  // Após 6 segundos, troca para aprovado
+  setTimeout(() => {
+    // Esconde logo e texto inicial
+    logo.style.display = 'none';
+    subtitle.style.display = 'none';
+
+    // Mostra texto de aprovação e checkmark com animação
+    approvalText.classList.add('visible');
+    checkmark.classList.add('visible');
+
+    // Marca no localStorage que o processo de onboarding foi concluído
+    localStorage.setItem('onboardingComplete', 'true');
+
+    // Redireciona para tela inicial após 3 segundos
+    setTimeout(() => {
+      window.location.href = 'telainicial.html';
+    }, 3000);
+
+  }, 6000);
+
+</script>
+
+</body>
+</html>

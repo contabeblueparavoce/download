@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Empréstimo - Consultar (Mock)</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1462d8;
+            --dark-text: #333333;
+            --light-text: #71717a;
+            --border-color: #e5e7eb;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .phone {
+            width: 100%;
+            max-width: 400px;
+            background-color: #f9f9f9; /* Fundo levemente cinza */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* HEADER */
+        .header {
+            padding: 18px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+
+        .close-button {
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .close-button svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--dark-text);
+            stroke-width: 2;
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 24px 16px;
+            flex-grow: 1;
+        }
+
+        .main-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--dark-text);
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--light-text);
+            margin-bottom: 24px;
+        }
+
+        /* CARD STYLE */
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 16px;
+        }
+
+        .solicitado-valor {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 4px;
+        }
+
+        .cta-button {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .cta-button:hover {
+            background-color: #0b3e86;
+        }
+        
+        /* DETALHES ZERADOS */
+        .detail-row, .detail-header {
+            margin-bottom: 10px;
+        }
+        .detail-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--light-text);
+        }
+        .detail-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark-text);
+        }
+        
+        .zero-value {
+             color: #ccc; /* Cor cinza claro para indicar valor zerado/indisponível */
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-top: 6px;
+            color: var(--light-text);
+        }
+
+        /* TOAST MESSAGE STYLES */
+        #activation-toast {
+            visibility: hidden;
+            background-color: var(--dark-text);
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px 20px;
+            position: fixed;
+            z-index: 100;
+            bottom: 30px;
+            width: calc(100% - 40px);
+            max-width: 360px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+
+        #activation-toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="phone">
+    <div class="header">
+        <div class="header-title">7/7 Resumo da contratação</div>
+        <a href="telainicial.html" class="close-button">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </a>
+    </div>
+
+    <div class="content">
+        <h1 class="main-title">Resumo da contratação</h1>
+        <p class="subtitle">Crédito sujeito a análise</p>
+
+        <div class="card">
+            <div class="card-header">Empréstimos Consignado</div> <p class="detail-header">Total solicitado</p>
+            <div class="solicitado-valor zero-value" style="margin-bottom: 16px;">R$ 0,00</div> 
+
+            <button id="consultar-btn" class="cta-button" onclick="showActivationMessage(event)">
+                Consultar
+            </button>
+        </div>
+
+        <div class="card">
+            <p class="detail-header">Valor do vencimento</p>
+            <div class="detail-value zero-value">0X R$ 0,00</div>
+            
+            <div style="background-color: #f0f8ff; padding: 12px; border-radius: 8px; margin: 16px 0; font-size: 14px; color: var(--light-text);">
+                O valor será cobrado na sua fatura
+            </div>
+
+            <div class="detail-row">
+                <p class="detail-header">Primeira parcela</p>
+                <div class="detail-value zero-value">--/--/--</div>
+            </div>
+            
+            <div class="detail-row">
+                <p class="detail-header">Última parcela</p>
+                <div class="detail-value zero-value">--/--/--</div>
+            </div>
+
+            <p class="detail-header" style="margin-top: 24px;">Resumo:</p>
+            
+            <div class="summary-item">
+                <span>TFC (Tarifa de ficha cadastral)</span>
+                <span class="zero-value">R$ 0,00</span>
+            </div>
+            <div class="summary-item">
+                <span>IOF</span>
+                <span class="zero-value">R$ 0,00</span>
+            </div>
+            <div class="summary-item" style="margin-bottom: 8px;">
+                <span>(0,00% do valor financiado)</span>
+                <span></span>
+            </div>
+            
+            <div class="summary-item">
+                <span>Custo Efetivo Total</span>
+                <span class="zero-value">0,00% ao mês</span>
+            </div>
+            <div class="summary-item">
+                <span></span>
+                <span class="zero-value">0,00% ao ano</span>
+            </div>
+            
+            <div style="text-align: center; margin-top: 24px;">
+                <a href="#" style="color: var(--primary-blue); font-size: 14px; font-weight: 600; text-decoration: none;">Ver mais</a>
+            </div>
+        </div>
+
+        <button class="cta-button" disabled style="opacity: 0.5; cursor: not-allowed; background-color: var(--primary-blue);">
+            Contratar
+        </button>
+    </div>
+
+    <div id="activation-toast">
+        Ative sua conta para consultar as condições de empréstimo.
+    </div>
+</div>
+
+<script>
+    /**
+     * Exibe a mensagem de toast e a esconde automaticamente após 3 segundos.
+     * @param {Event} event - O evento de clique.
+     */
+    function showActivationMessage(event) {
+        // Previne a ação padrão do botão (impedindo qualquer navegação ou submit)
+        if (event) event.preventDefault(); 
+        
+        const toast = document.getElementById("activation-toast");
+        
+        // Se a mensagem já estiver visível, reinicia a animação/timer
+        if (toast.classList.contains("show")) {
+            toast.classList.remove("show");
+            void toast.offsetWidth; // Força um reflow (reinicia a transição)
+        }
+
+        // 1. Exibe a mensagem (adiciona a classe 'show')
+        toast.classList.add("show");
+        
+        // 2. Esconde a mensagem após 3000ms (3 segundos)
+        setTimeout(function(){ 
+            toast.classList.remove("show"); 
+        }, 3000);
+    }
+</script>
+</body>
+</html>

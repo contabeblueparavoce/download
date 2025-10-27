@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tela de Abertura</title>
+
+<!-- Fonte parecida com a da Play Store -->
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Google Sans', Arial, sans-serif;
+  }
+
+  .logo {
+    width: 180px; /* aumentado 1.5x em relação ao original (120px) */
+    opacity: 0;
+    transform: scale(0.3);
+    animation: growIn 2.5s ease forwards;
+  }
+
+  @keyframes growIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .subtitle {
+    margin-top: 10px; /* distância reduzida entre logo e texto */
+    text-align: center;
+    color: #333;
+    font-size: 20px;
+    opacity: 0;
+    animation: fadeInText 2.5s ease forwards; /* agora aparece junto com a logo */
+  }
+
+  @keyframes fadeInText {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Logo puxada da pasta assets -->
+  <img src="assets/logo.png" alt="Logo do App" class="logo" />
+
+  <!-- Texto abaixo da logo -->
+  <div class="subtitle">
+    Empréstimo pessoal Beblue<br>
+    a ajuda que você precisa.
+  </div>
+
+  <script>
+    // Redireciona para index1.html após 3 segundos (tempo da animação + buffer)
+    setTimeout(() => {
+      const userData = localStorage.getItem('userData');
+      const onboardingComplete = localStorage.getItem('onboardingComplete');
+
+      // Se o usuário já existe E já completou o onboarding, vai direto para a tela inicial
+      if (userData && onboardingComplete === 'true') {
+        window.location.href = "telainicial.html";
+      } else {
+        // Caso contrário, segue o fluxo normal de login/cadastro
+        window.location.href = "index1.html";
+      }
+    }, 3000);
+  </script>
+
+</body>
+</html>

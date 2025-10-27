@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pix - Elisa Nunes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root{
+            /* Cores Base do Design Original */
+            --header-bg: #ffffff; 
+            --content-bg: #ffffff; 
+            --text-color: #333333; /* Texto do corpo */
+            --icon-color: #71717a; /* Cor dos ícones */
+            --line-color: #e5e7eb; /* Cor da linha divisória */
+            --muted-text: #6b7280; /* Texto de saldo */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--header-bg); /* Fundo do corpo para tela cheia */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin: 0;
+            height: 100vh;
+        }
+
+        .phone {
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background-color: var(--content-bg);
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        /* Estilo do Header */
+        .header {
+            background-color: var(--header-bg);
+            color: white;
+            padding: 15px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Conteúdo principal */
+        .content {
+            padding-top: 24px;
+            color: var(--text-color);
+        }
+
+        .content h1 {
+            padding: 0 24px;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .balance-info {
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            color: var(--muted-text);
+        }
+        
+        .balance-info span {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        .balance-info svg {
+            color: var(--muted-text);
+        }
+
+        .pix-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--line-color);
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+        
+        .pix-option:hover {
+            background-color: #f7f7f7;
+        }
+
+        .option-details {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .icon-wrapper {
+            width: 8px; 
+            height: 8px;
+            border-radius: 50%;
+            color: var(--icon-color);
+            background-color: currentColor;
+        }
+        
+        .option-details .text {
+            font-size: 1.05rem;
+        }
+        
+        .arrow-icon {
+            color: var(--icon-color);
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+    </style>
+</head>
+<body>
+<div class="phone">
+    <div class="header">
+        <!-- Botão de voltar para telainicial.html com cor preta -->
+        <a href="telainicial.html" class="text-2xl">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="black" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+        </a>
+        <div class="text-lg font-semibold">Pix</div>
+        <div class="w-6"></div> 
+    </div>
+
+    <div class="content">
+        <h1>Pix</h1>
+        
+        <div class="balance-info">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5h-3a1.5 1.5 0 0 0-1.5 1.5v3a1.5 1.5 0 0 0 1.5 1.5h3a1.5 1.5 0 0 0 1.5-1.5v-3a1.5 1.5 0 0 0-1.5-1.5Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 10.5V8.25a3.75 3.75 0 0 1 7.5 0V10.5" />
+            </svg>
+            Valor disponível em conta: <span id="balance-value">R$ 0,00</span>
+        </div>
+
+        <nav>
+            <ul>
+                <li>
+                    <a href="fazerpix.html" class="pix-option">
+                        <div class="option-details">
+                            <div class="icon-wrapper"></div>
+                            <span class="text">Fazer Pix</span>
+                        </div>
+                        <span class="arrow-icon">></span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="cadastrochave.html" class="pix-option">
+                        <div class="option-details">
+                            <div class="icon-wrapper"></div>
+                            <span class="text">Cadastrar chave</span>
+                        </div>
+                        <span class="arrow-icon">></span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="extrato.html" class="pix-option">
+                        <div class="option-details">
+                            <div class="icon-wrapper"></div>
+                            <span class="text">Extrato Pix</span>
+                        </div>
+                        <span class="arrow-icon">></span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="limitepix.html" class="pix-option">
+                        <div class="option-details">
+                            <div class="icon-wrapper"></div>
+                            <span class="text">Limite Pix</span>
+                        </div>
+                        <span class="arrow-icon">></span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="atendimento.html" class="pix-option">
+                        <div class="option-details">
+                            <div class="icon-wrapper"></div>
+                            <span class="text">Atendimento</span>
+                        </div>
+                        <span class="arrow-icon">></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="h-48"></div>
+
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const userBalance = localStorage.getItem('userBalance');
+    if (userBalance) {
+        const formattedBalance = parseFloat(userBalance).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        document.getElementById('balance-value').textContent = formattedBalance;
+    }
+});
+</script>
+
+</body>
+</html>

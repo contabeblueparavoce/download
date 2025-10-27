@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Limite Pix - Agi (Mock)</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root{
+            --primary-blue: #1462d8;
+            --dark-text: #333333;
+            --light-gray: #f2f2f2;
+            --medium-gray: #8c8c8c;
+            --text-color: #333333;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .phone {
+            width: 100%;
+            max-width: 400px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            border-bottom: 1px solid #eee;
+        }
+        .back-button {
+            color: var(--dark-text);
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .help-icon {
+            color: var(--medium-gray);
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .content {
+            padding: 24px 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-color);
+            line-height: 1.2;
+            margin-bottom: 12px;
+        }
+        .description {
+            font-size: 16px;
+            color: var(--medium-gray);
+            margin-bottom: 32px;
+            line-height: 1.4;
+        }
+        .value-display {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 24px;
+            position: relative;
+            display: inline-block;
+        }
+        .slider-container {
+            width: 100%;
+            height: 8px;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            position: relative;
+            margin-top: 10px;
+        }
+        .slider-thumb {
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary-blue);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 0%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            border: 2px solid white;
+            transition: left 0.05s linear;
+        }
+        .slider-fill {
+            height: 8px;
+            background-color: var(--primary-blue);
+            border-radius: 4px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+        }
+        .define-button {
+            background-color: var(--light-gray);
+            color: var(--medium-gray);
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            width: 100%;
+            border: none;
+            cursor: not-allowed;
+            margin-top: auto;
+        }
+        .warning-text {
+            font-size: 13px;
+            color: var(--medium-gray);
+            text-align: center;
+            margin-top: 16px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            line-height: 1.4;
+        }
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--medium-gray);
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="phone">
+    <div class="header">
+        <a href="pix.html" class="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+            </svg>
+        </a>
+        <a href="#" class="help-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712L12 15l-2.121-2.121c-1.172-1.025-1.172-2.687 0-3.712ZM12 18.75V21m-4.5-4.5H5.25A2.25 2.25 0 0 1 3 15.75V9.75a2.25 2.25 0 0 1 2.25-2.25H9M18 18.75h-.008v.008H18ZM12 6.75h.008v.008H12Zm.01 6a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+            </svg>
+        </a>
+    </div>
+    
+    <div class="content">
+        <div>
+            <div class="title">Coloque o valor de limite diário para Pix</div>
+            <p class="description">
+                Para te ajudar a definir, pense em quanto costuma transferir por dia.
+            </p>
+            <div class="value-display" id="valor-display">R$ 0,00</div>
+            <div class="slider-container" id="slider">
+                <div class="slider-fill" id="fill"></div>
+                <div class="slider-thumb" id="thumb"></div>
+            </div>
+            <div class="range-labels">
+                <span>R$ 0</span>
+                <span>R$ 10.000</span>
+            </div>
+        </div>
+
+        <div>
+            <button class="define-button">Definir limite</button>
+            <p class="warning-text">
+                Transações consideradas suspeitas serão bloqueadas, mesmo dentro do limite diário.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const thumb = document.getElementById("thumb");
+    const slider = document.getElementById("slider");
+    const fill = document.getElementById("fill");
+    const valorDisplay = document.getElementById("valor-display");
+
+    let isDragging = false;
+
+    const maxValor = 10000; // limite máximo R$ 10.000
+
+    const atualizarPosicao = (x) => {
+        const rect = slider.getBoundingClientRect();
+        let percent = ((x - rect.left) / rect.width) * 100;
+        if (percent < 0) percent = 0;
+        if (percent > 100) percent = 100;
+
+        thumb.style.left = percent + "%";
+        fill.style.width = percent + "%";
+
+        const valor = (maxValor * percent) / 100;
+        valorDisplay.textContent = `R$ ${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    };
+
+    thumb.addEventListener("mousedown", () => { isDragging = true; });
+    document.addEventListener("mouseup", () => { isDragging = false; });
+    document.addEventListener("mousemove", (e) => {
+        if (isDragging) atualizarPosicao(e.clientX);
+    });
+
+    // Touch (mobile)
+    thumb.addEventListener("touchstart", () => { isDragging = true; });
+    document.addEventListener("touchend", () => { isDragging = false; });
+    document.addEventListener("touchmove", (e) => {
+        if (isDragging) atualizarPosicao(e.touches[0].clientX);
+    });
+</script>
+</body>
+</html>
