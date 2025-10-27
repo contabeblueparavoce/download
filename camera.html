@@ -38,7 +38,7 @@ video {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 70vw;   /* aumenta o tamanho do oval */
+  width: 70vw;
   height: 90vw;
   border: 4px solid #1462d8;
   border-radius: 50%;
@@ -59,7 +59,7 @@ video {
   animation: popIn 0.6s ease forwards;
 }
 
-/* Botão continuar */
+/* Botão continuar e tirar foto */
 button {
   position: absolute;
   bottom: 40px;
@@ -76,6 +76,10 @@ button {
   display: none;
 }
 
+#captureBtn {
+  display: block;
+}
+
 /* Animação do checkmark */
 @keyframes popIn {
   0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
@@ -90,31 +94,39 @@ button {
   <video id="video" autoplay muted playsinline></video>
   <div class="face-frame"></div>
   <div id="checkmark" class="checkmark">✅</div>
+  <button id="captureBtn">Tirar Foto</button>
   <button id="continueBtn">Continuar</button>
 </div>
 
 <script>
 async function startCamera() {
   try {
-    // abre a câmera frontal
     const stream = await navigator.mediaDevices.getUserMedia({ 
       video: { facingMode: "user" } 
     });
     const video = document.getElementById('video');
     video.srcObject = stream;
-
-    // Simula o tempo de análise facial (7 segundos)
-    setTimeout(() => {
-      document.getElementById('checkmark').style.display = 'block';
-      document.getElementById('continueBtn').style.display = 'block';
-    }, 7000);
-
   } catch (err) {
     alert('Erro ao acessar a câmera: ' + err);
   }
 }
 
 startCamera();
+
+// Captura a foto quando clicar
+document.getElementById('captureBtn').addEventListener('click', () => {
+  const canvas = document.createElement('canvas');
+  const video = document.getElementById('video');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  // Mostra checkmark e botão continuar
+  document.getElementById('checkmark').style.display = 'block';
+  document.getElementById('continueBtn').style.display = 'block';
+  document.getElementById('captureBtn').style.display = 'none';
+});
 
 // Botão de continuar
 document.getElementById('continueBtn').addEventListener('click', () => {
